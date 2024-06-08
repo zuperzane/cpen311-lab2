@@ -1,6 +1,6 @@
 |simple_ipod_solution
-CLOCK_50 => CLK_50M.IN19
-TD_CLK27 => ~NO_FANOUT~
+CLOCK_50 => CLK_50M.IN18
+TD_CLK27 => TD_CLK27.IN1
 LEDR[0] <= <GND>
 LEDR[1] <= <GND>
 LEDR[2] <= <GND>

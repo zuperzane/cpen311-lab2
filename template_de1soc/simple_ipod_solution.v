@@ -6,8 +6,15 @@
 `define done 3'b011
 
 
-module divider(input wire [25:0] halfdivisor, input wire clk
-,output reg out_of_divisor);
+
+
+module statesmoment(input wire lastkey);
+
+
+
+endmodule
+
+module divider(input wire [25:0] halfdivisor, input wire clk, output reg out_of_divisor);
 
 reg [25:0] curr;
 wire switch;
@@ -66,7 +73,7 @@ else
 
 case(state)
 `idle:begin
-	if(!waitrequest&(clk_22&!clk_22_last))begin
+	if(!waitrequest&(clk_22^clk_22_last))begin
 	state<=`ready;
 	
 	end
@@ -257,6 +264,9 @@ logic  [7:0] LED;
 assign CLK_50M =  CLOCK_50;
 assign LEDR[7:0] = LED[7:0];
 
+logic CLK_27M;
+assign CLK_27M = TD_CLK27;
+
 //Character definitions
 
 //numbers
@@ -353,10 +363,10 @@ wire Sample_Clk_Signal;
 // Insert your code for Lab2 here!
 //
 //
-wire dir,clk,rst,clk_22;
-divider clk_222(26'b10001110000, CLK_50M,clk_22);
+wire dir,clk,rst,clk_44;
+divider clk_222(26'b1001100110, TD_CLK27,clk_44);
 wire [7:0] audio;
-fsm_read fsmread(flash_mem_read,flash_mem_waitrequest,flash_mem_address,flash_mem_readdata,flash_mem_readdatavalid, dir,clk,rst,clk_22,audio);
+fsm_read fsmread(flash_mem_read,flash_mem_waitrequest,flash_mem_address,flash_mem_readdata,flash_mem_readdatavalid, dir,clk,rst,clk_44,audio);
 assign flash_mem_byteenable=4'b1111;
 assign dir=SW[2];
 assign rst=SW[3];
@@ -415,7 +425,7 @@ doublesync ps2d_doublsync
 
 wire reset_kbd_data;
 (* KEEP = "TRUE" *) wire conv_now_ignore_timing;
- 
+ //kbdddd is the magic sauce
 wire [7:0] kbd_received_ascii_code, kbd_scan_code;
     
 Kbd_ctrl Kbd_Controller(
